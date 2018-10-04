@@ -14,7 +14,7 @@ class PostListing extends React.Component {
         cover: postEdge.node.cover,
         title: postEdge.node.title,
         date: postEdge.node.date,
-        excerpt: postEdge.node.excerpt,
+        excerpt: postEdge.node.excerpt.replace(/<p class="link-more.*/, ""),
         mainCategory: postEdge.node.categories[0].name,
         project: postEdge.node.project,
         featured_media: postEdge.node.featured_media,
