@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { graphql, Link } from 'gatsby'
 import Layout from '../components/Layout'
+import Comments from '../components/Comments'
 
 export const BlogPostTemplate = ({
   content,
@@ -12,6 +13,7 @@ export const BlogPostTemplate = ({
   date,
   author,
   helmet,
+  comments,
 }) => {
   return (
     <section className="section">
@@ -54,6 +56,7 @@ export const BlogPostTemplate = ({
                   </ul>
                 </div>
               ) : null}
+              {comments && <Comments comments={comments} postName={title} />}
             </div>
           </div>
         </div>
@@ -69,7 +72,7 @@ BlogPostTemplate.propTypes = {
 }
 
 const BlogPost = ({ data }) => {
-  const { wordpressPost: post } = data
+  const { post, comments } = data
 
   return (
     <Layout>
@@ -81,6 +84,7 @@ const BlogPost = ({ data }) => {
         title={post.title}
         date={post.date}
         author={post.author}
+        comments={comments.edges}
       />
     </Layout>
   )
@@ -102,8 +106,8 @@ export const pageQuery = graphql`
     date(formatString: "MMMM DD, YYYY")
     title
   }
-  query BlogPostByID($id: String!) {
-    wordpressPost(id: { eq: $id }) {
+  query BlogPostByID($id: String!, $wordpress_id: Int) {
+    post: wordpressPost(id: { eq: $id }) {
       id
       title
       slug
@@ -120,6 +124,28 @@ export const pageQuery = graphql`
       author {
         name
         slug
+      }
+    }
+    comments: allWordpressWpComments(
+      filter: { post: { eq: $wordpress_id }, status: { eq: "approved" } }
+      sort: { order: ASC, fields: date }
+    ) {
+      edges {
+        node {
+          wordpress_id
+          wordpress_parent
+          author
+          author_name
+          author_url
+          author_avatar_urls {
+            wordpress_96
+          }
+          formatted_date: date(formatString: "MMMM D, YYYY [at] h:mm a")
+          date
+          content
+          status
+          type
+        }
       }
     }
   }
