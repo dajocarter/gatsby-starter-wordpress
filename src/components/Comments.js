@@ -32,7 +32,7 @@ const Comments = ({ comments, postName }) => {
                   </strong>
                 </div>
                 <div className="comment-metadata">
-                  <time datetime={node.date}>{node.formatted_date}</time>
+                  <time dateTime={node.date}>{node.formatted_date}</time>
                 </div>
               </header>
               <div
