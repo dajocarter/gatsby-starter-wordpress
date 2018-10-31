@@ -88,6 +88,7 @@ exports.createPages = ({ actions, graphql }) => {
           component: postTemplate,
           context: {
             id: edge.node.id,
+            wordpress_id: edge.node.wordpress_id,
           },
         })
       })
