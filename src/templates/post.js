@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
 import { graphql, Link } from 'gatsby'
+import Img from 'gatsby-image'
 import Layout from '../components/Layout'
 
 export const BlogPostTemplate = ({
@@ -9,6 +10,7 @@ export const BlogPostTemplate = ({
   categories,
   tags,
   title,
+  featuredImage,
   date,
   author,
   helmet,
@@ -22,6 +24,9 @@ export const BlogPostTemplate = ({
             <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
               {title}
             </h1>
+            {featuredImage && (
+              <Img fluid={featuredImage.localFile.childImageSharp.fluid} />
+            )}
             <div dangerouslySetInnerHTML={{ __html: content }} />
             <div style={{ marginTop: `4rem` }}>
               <p>
@@ -97,6 +102,7 @@ const BlogPost = ({ data }) => {
         categories={post.categories}
         tags={post.tags}
         title={post.title}
+        featuredImage={post.featured_media}
         date={post.date}
         author={post.author}
       />
@@ -126,6 +132,15 @@ export const pageQuery = graphql`
       title
       slug
       content
+      featured_media {
+        localFile {
+          childImageSharp {
+            fluid {
+              ...GatsbyImageSharpFluid_withWebp_tracedSVG
+            }
+          }
+        }
+      }
       date(formatString: "MMMM DD, YYYY")
       categories {
         name
