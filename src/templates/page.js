@@ -31,7 +31,7 @@ PageTemplate.propTypes = {
 }
 
 const Page = ({ data }) => {
-  const { wordpressPage: page } = data
+  const { page } = data
 
   return (
     <Layout>
@@ -48,7 +48,7 @@ export default Page
 
 export const pageQuery = graphql`
   query PageById($id: String!) {
-    wordpressPage(id: { eq: $id }) {
+    page: wordpressPage(id: { eq: $id }) {
       title
       content
     }
