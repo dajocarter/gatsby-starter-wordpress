@@ -41,7 +41,12 @@ const Page = ({ data }) => {
 }
 
 Page.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.shape({
+    page: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
 }
 
 export default Page
